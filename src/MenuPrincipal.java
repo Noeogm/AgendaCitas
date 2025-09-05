@@ -4,9 +4,10 @@ public class MenuPrincipal extends JFrame {
 
     public MenuPrincipal() {
         setTitle("Sistema de Reservas");
-        setSize(1200, 700);
+        setSize(800, 480);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
         setLayout(null);
 
         JButton btnAgendar = new JButton("Agendar Cita");

@@ -48,6 +48,7 @@ public class BuscarCitasGUI extends JFrame {
             ORDER BY c.fecha, c.hora
         """;
 
+
         try (Connection conn = Conexion.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {

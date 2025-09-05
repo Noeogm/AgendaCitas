@@ -1,7 +1,13 @@
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class AgendaCitasGUI extends JFrame {
+
     private JTextField txtFecha;
     private JTextField txtHora;
 
@@ -9,6 +15,10 @@ public class AgendaCitasGUI extends JFrame {
         this(); // llama al constructor original
         txtFecha.setText(fecha.toString());
         txtHora.setText(hora.toString());
+        //MOSTRAR SIN PODER EDITAR
+
+        txtFecha.setEditable(false);
+        txtHora.setEditable(false);
     }
 
     public AgendaCitasGUI() {
@@ -16,9 +26,10 @@ public class AgendaCitasGUI extends JFrame {
         setSize(500, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null); // Centra la ventana
-        setLayout(null); // Usaremos posicionamiento manual por ahora
+        setLayout(null); //
         setResizable(false);
-        // Aquí irán los componentes
+
+        //  componentes
         JLabel lblNombre = new JLabel("Nombre:");
         lblNombre.setBounds(30, 30, 100, 25);
         add(lblNombre);
@@ -48,7 +59,7 @@ public class AgendaCitasGUI extends JFrame {
         lblFecha.setBounds(30, 150, 100, 25);
         add(lblFecha);
 
-// Aquí puedes usar JDateChooser si ya lo tienes configurado
+
         txtFecha = new JTextField("YYYY-MM-DD");
         txtFecha.setBounds(140, 150, 200, 25);
         add(txtFecha);
@@ -82,6 +93,29 @@ public class AgendaCitasGUI extends JFrame {
                 LocalDate fecha = LocalDate.parse(fechaStr);
                 LocalTime hora = LocalTime.parse(horaStr);
 
+                //Vamos a controlar slot dispinibilidad
+                try (Connection conn = Conexion.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(
+                             "SELECT COUNT(*) FROM citas WHERE fecha = ? AND hora = ?")) {
+
+                    stmt.setDate(1, java.sql.Date.valueOf(fecha));
+                    stmt.setTime(2, java.sql.Time.valueOf(hora));
+                    ResultSet rs = stmt.executeQuery();
+
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        JOptionPane.showMessageDialog(null, "Ese horario ya está ocupado. Por favor elige otro.");
+                        return;
+                    }
+
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al verificar disponibilidad.");
+                    ex.printStackTrace();
+                    return;
+                }
+
+
+
+
                 Cliente cliente = new Cliente(nombre, telefono, servicio);
                 Clientedb clienteDAO = new Clientedb();
                 int clienteId = clienteDAO.insertarCliente(cliente);
@@ -112,3 +146,4 @@ public class AgendaCitasGUI extends JFrame {
 
 
 }
+
