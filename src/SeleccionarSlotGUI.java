@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.time.*;
-//import java.util.*;
 import java.sql.*;
 import java.util.Set;
 import java.util.HashSet;
@@ -35,6 +34,7 @@ public class SeleccionarSlotGUI extends JFrame {
         add(new JScrollPane(listaHoras), BorderLayout.CENTER);
 
         // Panel inferior: botón
+
         JButton btnSeleccionar = new JButton("Agendar en este horario");
         btnSeleccionar.addActionListener(e -> abrirFormulario());
         add(btnSeleccionar, BorderLayout.SOUTH);

@@ -5,57 +5,64 @@ public class MenuPrincipal extends JFrame {
 
     public MenuPrincipal() {
         setTitle("Sistema de Reservas");
-        setSize(800, 480);
+
+        Image icono = Toolkit.getDefaultToolkit().getImage("estilo/MINIATURA.png");
+        setIconImage(icono);
+
+        setSize(800, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        setLayout(null);
-        setBackground(new Color(223, 225, 225));
+        setLayout(new BorderLayout());
+        // Fondo personalizado
+        getContentPane().setBackground(new Color(245, 245, 245));
 
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1, 15, 15)); // 3 filas, espacio vertical
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
-        panel.setBounds(250, 100, 300, 200);
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
+        panelBotones.setBackground(new Color(245, 245, 245));
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); // margen interno
 
-        /*
-        JButton btnAgendar = new JButton("Agendar Cita");
-        btnAgendar.setBounds(120, 40, 150, 40);
-        add(btnAgendar);
 
-        JButton btnBuscar = new JButton("Buscar Citas");
-        btnBuscar.setBounds(120, 100, 150, 40);
-        add(btnBuscar);
 
-        JButton btnModificar = new JButton("Modificar Citas");
-        btnModificar.setBounds(120, 160, 150, 40);
-        add(btnModificar);*/
         // Crear botones
         JButton btnAgendar = new JButton("Agendar Cita");
-        JButton btnBuscar = new JButton("Buscar Cita");
+        JButton btnBuscar = new JButton("Mostrar Reservas");
         JButton btnModificar = new JButton("Modificar Cita");
 
-        // Personalizar botones
-        Font fuente = new Font("Arial", Font.BOLD, 20);
-        Color colorFondo = new Color(20, 179, 113); // verde suave
 
         for (JButton btn : new JButton[]{btnAgendar, btnBuscar, btnModificar}) {
-            btn.setFont(fuente);
-            btn.setBackground(colorFondo);
+            btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+            btn.setMaximumSize(new Dimension(200, 80));
+            btn.setBackground(new Color(0, 153, 102)); // verde elegante
             btn.setForeground(Color.WHITE);
+            btn.setFont(new Font("Arial", Font.BOLD, 14));
             btn.setFocusPainted(false);
-            panel.add(btn);
+            panelBotones.add(btn);
+            panelBotones.add(Box.createRigidArea(new Dimension(0, 20))); // espacio entre botones
         }
 
+        add(panelBotones, BorderLayout.WEST);
+
+        JPanel panelicono = new JPanel();
+        panelicono.setLayout(new BoxLayout(panelicono, BoxLayout.Y_AXIS));
+        panelicono.setBackground(new Color(245, 245, 245));
+
+        ImageIcon imagenSalon = new ImageIcon("estilo/logo.png");
+
+        JLabel lblImagen = new JLabel(imagenSalon);
+        lblImagen.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+
+        panelicono.add(lblImagen);
 
 
 
-        // Acción para abrir la ventana de agendar
-       /* btnAgendar.addActionListener(e -> {
-            AgendaCitasGUI ventanaAgendar = new AgendaCitasGUI();
-            ventanaAgendar.setVisible(true);
-        });
-*/
+        add(panelBotones,BorderLayout.WEST);
+        add(panelicono, BorderLayout.EAST);
+
+
+
         // Acción para buscar citas
         btnBuscar.addActionListener(e -> {
             BuscarCitasGUI ventanaBuscar = new BuscarCitasGUI();
@@ -72,8 +79,8 @@ public class MenuPrincipal extends JFrame {
             selector.setVisible(true);
         });
 
-        add(panel);
-        setVisible(true);
+
+
 
 
 
